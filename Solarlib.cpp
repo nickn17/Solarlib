@@ -246,8 +246,16 @@ double getSAA(time_t t){
 void calcSolar(time_t t, SolarElements &SE){
     // Calculate the time past midnight, as a fractional day value
 	// e.g. if it's noon, the result should be 0.5.
-	SE.timeFracDay = ((((double)(second(t)/60) + minute(t))/60) +
-                   hour(t))/24;
+	
+    uint32_t time;
+    time = (uint32_t)t;
+    int second = time % 60;
+    time /= 60; // now it is minutes
+    int minute = time % 60;
+    time /= 60; // now it is hours
+    int hour = time % 24;
+	
+	SE.timeFracDay = ((((double)(second/60) + minute)/60) + hour)/24;
     // unixDays is the number of whole days since the start
     // of the Unix epoch. The division sign will truncate any remainder
     // since this will be done as integer division.
